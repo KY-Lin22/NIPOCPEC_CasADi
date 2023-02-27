@@ -6,6 +6,7 @@ TimeStart = tic;
 
 OCPEC = self.OCPEC;
 Option = self.Option;
+FunObj = self.FunObj;
 
 Dim = OCPEC.Dim;
 nStages = OCPEC.nStages;
@@ -37,7 +38,7 @@ Fun_Init = struct('L', 0,...% no deviation for the VarInit
     'PSIg', Fun_Ref.PSIg, 'PSIgSigma_diagVec', Fun_Ref.PSIgSigma_diagVec, 'PSIgG_diagVec', Fun_Ref.PSIgG_diagVec,...
     'PSIphi', Fun_Ref.PSIphi, 'PSIphiGamma_diagVec', Fun_Ref.PSIphiGamma_diagVec, 'PSIphiPHI_diagVec', Fun_Ref.PSIphiPHI_diagVec);
 % init Jac
-[FRP_Lx_Init, FRP_Lu_Init, FRP_Lp_Init, FRP_Lw_Init] = self.FunObj.FRP_L_grad(Var_Ref.x, Var_Ref.u, Var_Ref.p, Var_Ref.w, FRP.ZRef, FRP.ZWeight);
+[FRP_Lx_Init, FRP_Lu_Init, FRP_Lp_Init, FRP_Lw_Init] = FunObj.FRP_L_grad(Var_Ref.x, Var_Ref.u, Var_Ref.p, Var_Ref.w, FRP.ZRef, FRP.ZWeight);
 Jac_Init = struct('Lx', full(FRP_Lx_Init), 'Lu', full(FRP_Lu_Init), 'Lp', full(FRP_Lp_Init), 'Lw', full(FRP_Lw_Init),...
     'Gx', Jac_Ref.Gx, 'Gu', Jac_Ref.Gu, 'Gp', Jac_Ref.Gp, 'Gw', Jac_Ref.Gw,...
     'Cx', Jac_Ref.Cx, 'Cu', Jac_Ref.Cu, 'Cp', Jac_Ref.Cp, 'Cw', Jac_Ref.Cw,...
@@ -91,7 +92,11 @@ for j = 1 : maxIterNum + 1
             Var_FRP = struct('x', Var.x, 'u', Var.u, 'p', Var.p, 'w', Var.w,...
                 'sigma', Var.sigma, 'eta', zeros(Dim.eta, nStages), 'lambda', zeros(Dim.lambda, nStages), 'gamma', Var.gamma);
             % create Fun_FRP (reusing Fun except cost function)
-            L = self.FunObj.L(Var_FRP.x, Var_FRP.u, Var_FRP.p, Var_FRP.w);
+            L_T = FunObj.L_T(Var_FRP.x(:, end), Var_FRP.u(:, end), Var_FRP.p(:, end), Var_FRP.w(:, end));
+            L_S = FunObj.L_S(Var_FRP.x, Var_FRP.u, Var_FRP.p, Var_FRP.w);
+            L = full(L_S);
+            L(:, end) = L(:, end) + full(L_T);
+            
             Fun_FRP = struct('L', full(L),...
                 'G', Fun.G, 'C', Fun.C, 'F', Fun.F, 'PHI',Fun.PHI,...
                 'PSIg', Fun.PSIg, 'PSIgSigma_diagVec', Fun.PSIgSigma_diagVec, 'PSIgG_diagVec', Fun.PSIgG_diagVec,...
