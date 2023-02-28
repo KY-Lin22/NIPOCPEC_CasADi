@@ -6,9 +6,9 @@ TimeStart = tic;
 
 OCPEC = self.OCPEC;
 Option = self.Option;
+FunObj = self.FunObj;
 
 Dim = OCPEC.Dim;
-nStages = OCPEC.nStages;
 employSOC = Option.employSecondOrderCorrection;
 
 nu_D = Option.LineSearch.nu_D;
@@ -27,16 +27,13 @@ end
 %% Some Evaluation Quantities of Previous Iterate
 % cost and its directional derivative
 totalCost = sum(Fun.L);
+dx_k = dY_k(Dim.Node(4) + 1 : Dim.Node(5), :);
+du_k = dY_k(Dim.Node(5) + 1 : Dim.Node(6), :);
+dp_k = dY_k(Dim.Node(6) + 1 : Dim.Node(7), :);
+dw_k = dY_k(Dim.Node(7) + 1 : Dim.Node(8), :);
 
-dZ_k = dY_k(Dim.Node(4) + 1 : Dim.Node(8), :);
-totalCostDD = 0;
-for n = 1 : nStages 
-    LZ_n = [Jac.Lx(:, 1 + (n - 1) * Dim.x : n * Dim.x),...
-        Jac.Lu(:, 1 + (n - 1) * Dim.u : n * Dim.u),...
-        Jac.Lp(:, 1 + (n - 1) * Dim.p : n * Dim.p),...
-        Jac.Lw(:, 1 + (n - 1) * Dim.w : n * Dim.w)];      
-    totalCostDD = totalCostDD + LZ_n * dZ_k(:, n);
-end
+totalCostDD = FunObj.totalCostDD(Jac.Lx, Jac.Lu, Jac.Lp, Jac.Lw, dx_k, du_k, dp_k, dw_k);
+totalCostDD = sum(full(totalCostDD));
 
 % constraint violation (L1 norm)
 totalCstrVio_L1Norm = norm(reshape([Fun.PSIg; Fun.C; Fun.F; Fun.PSIphi], [], 1), 1); 

@@ -299,6 +299,18 @@ J_FunObj = Function('J',...
     {'J'});
 FunObj.J = J_FunObj.map(nStages);
 
+%% Line Search
+% total cost directional derivative
+dx = SX.sym('dx', Dim.x, 1);
+du = SX.sym('du', Dim.u, 1);
+dp = SX.sym('dp', Dim.p, 1);
+dw = SX.sym('dw', Dim.w, 1);
+
+totalCostDD = Lx * dx + Lu * du + Lp * dp + Lw * dw;
+totalCostDD_FunObj = Function('totalCostDD', {Lx, Lu, Lp, Lw, dx, du, dp, dw}, {totalCostDD},...
+    {'Lx', 'Lu', 'Lp', 'Lw', 'dx', 'du', 'dp', 'dw'}, {'totalCostDD'});
+FunObj.totalCostDD = totalCostDD_FunObj.map(nStages);
+
 %% Feasibility Restoration Phase
 ZRef = SX.sym('ZRef', Dim.Z, 1); % reference primal variable in FRP cost function
 ZWeight = SX.sym('ZWeight', Dim.Z, 1); % weight matrix in FRP cost function
