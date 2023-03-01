@@ -15,7 +15,7 @@ kappa_z_times = 0.2;
 kappa_z_exp = 1.5;
 
 % set scaling parameter and threshold 
-kappa_F = 10; 
+kappa_F = 1; 
 threshold_sz = max([s, z]);
 
 % constraint violation (L Inf norm)
