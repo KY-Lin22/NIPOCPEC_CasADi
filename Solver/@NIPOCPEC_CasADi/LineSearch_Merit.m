@@ -25,13 +25,18 @@ switch mode
 end
 
 %% Some Evaluation Quantities of Previous Iterate
+% extract search direction
+dsigma_k  = dY_k(              1 : Dim.Node(1), :);
+deta_k    = dY_k(Dim.Node(1) + 1 : Dim.Node(2), :);
+dlambda_k = dY_k(Dim.Node(2) + 1 : Dim.Node(3), :);
+dgamma_k  = dY_k(Dim.Node(3) + 1 : Dim.Node(4), :);
+dx_k      = dY_k(Dim.Node(4) + 1 : Dim.Node(5), :);
+du_k      = dY_k(Dim.Node(5) + 1 : Dim.Node(6), :);
+dp_k      = dY_k(Dim.Node(6) + 1 : Dim.Node(7), :);
+dw_k      = dY_k(Dim.Node(7) + 1 : Dim.Node(8), :);
+
 % cost and its directional derivative
 totalCost = sum(Fun.L);
-dx_k = dY_k(Dim.Node(4) + 1 : Dim.Node(5), :);
-du_k = dY_k(Dim.Node(5) + 1 : Dim.Node(6), :);
-dp_k = dY_k(Dim.Node(6) + 1 : Dim.Node(7), :);
-dw_k = dY_k(Dim.Node(7) + 1 : Dim.Node(8), :);
-
 totalCostDD = FunObj.totalCostDD(Jac.Lx, Jac.Lu, Jac.Lp, Jac.Lw, dx_k, du_k, dp_k, dw_k);
 totalCostDD = sum(full(totalCostDD));
 
@@ -57,20 +62,20 @@ while ~hasFoundNewIterate
     %% Step 1: estimate trail stepsize, var and merit 
     stepSize_trial = max([stepSize_Init, stepSize_Min]);
     
-    Var_trial.sigma  = Var.sigma  + stepSize_trial * dY_k(              1 : Dim.Node(1), :);
-    Var_trial.eta    = Var.eta    + stepSize_trial * dY_k(Dim.Node(1) + 1 : Dim.Node(2), :);
-    Var_trial.lambda = Var.lambda + stepSize_trial * dY_k(Dim.Node(2) + 1 : Dim.Node(3), :);
-    Var_trial.gamma  = Var.gamma  + stepSize_trial * dY_k(Dim.Node(3) + 1 : Dim.Node(4), :);
-    Var_trial.x      = Var.x      + stepSize_trial * dY_k(Dim.Node(4) + 1 : Dim.Node(5), :);
-    Var_trial.u      = Var.u      + stepSize_trial * dY_k(Dim.Node(5) + 1 : Dim.Node(6), :);
-    Var_trial.p      = Var.p      + stepSize_trial * dY_k(Dim.Node(6) + 1 : Dim.Node(7), :);
-    Var_trial.w      = Var.w      + stepSize_trial * dY_k(Dim.Node(7) + 1 : Dim.Node(8), :);    
-    
+    Var_trial.sigma  = Var.sigma  + stepSize_trial * dsigma_k;
+    Var_trial.eta    = Var.eta    + stepSize_trial * deta_k;
+    Var_trial.lambda = Var.lambda + stepSize_trial * dlambda_k;
+    Var_trial.gamma  = Var.gamma  + stepSize_trial * dgamma_k;
+    Var_trial.x      = Var.x      + stepSize_trial * dx_k;
+    Var_trial.u      = Var.u      + stepSize_trial * du_k;
+    Var_trial.p      = Var.p      + stepSize_trial * dp_k;
+    Var_trial.w      = Var.w      + stepSize_trial * dw_k;    
+
     Fun_trial = self.FunctionEvaluation(Var_trial, s, z, mode, FRP);
     totalCost_trail = sum(Fun_trial.L);
     totalCstrVio_L1Norm_trial = norm(reshape([Fun_trial.PSIg; Fun_trial.C; Fun_trial.F; Fun_trial.PSIphi], [], 1), 1);
     merit_trial = totalCost_trail + beta_k * totalCstrVio_L1Norm_trial;
-    
+
     %% Step 2: checking sufficient decrease condition
     if merit_trial <= merit + stepSize_trial * nu_D * meritDD
         % return merit line search Var
