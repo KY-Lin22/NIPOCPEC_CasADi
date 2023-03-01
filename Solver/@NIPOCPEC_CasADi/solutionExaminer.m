@@ -17,7 +17,7 @@ printLevel = Option.printLevel;
 Fun = self.FunctionEvaluation(solution, sEnd, zEnd, 'Regular', []);
 K = FunObj.K(solution.x, solution.u, solution.p);
 K = full(K);
-Jac = self.JacobianEvaluation(solution, sEnd, 'Regular', []);
+Jac = self.JacobianEvaluation(solution, Fun, sEnd, zEnd, 'Regular', []);
 
 %% Solution Examiner: Cost, KKT Error
 totalCost = sum(Fun.L);

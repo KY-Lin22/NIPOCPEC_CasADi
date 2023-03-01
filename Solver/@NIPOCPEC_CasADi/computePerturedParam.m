@@ -49,25 +49,15 @@ elseif (s_k ~= s) && (z_k == z)
     % FB for PHI
     PSIphi_k = FunObj.FB_PHI(Var_k.gamma, Fun_k.PHI, z_k_Repmat);
     Fun_k.PSIphi = full(PSIphi_k);      
-    [PSIphiGamma_diagVec_k, PSIphiPHI_diagVec_k] = FunObj.FB_PHI_grad(Var_k.gamma, Fun_k.PHI, z_k_Repmat);
-    Fun_k.PSIphiGamma_diagVec = full(PSIphiGamma_diagVec_k);
-    Fun_k.PSIphiPHI_diagVec = full(PSIphiPHI_diagVec_k);    
        
 elseif (s_k == s) && (z_k ~= z)
     % only z is update, hence update function about FB
     % FB for G
     PSIg_k = FunObj.FB_G(Var_k.sigma, Fun_k.G, z_k_Repmat);
     Fun_k.PSIg = full(PSIg_k);    
-    [PSIgSigma_diagVec_k, PSIgG_k_diagVec] = FunObj.FB_G_grad(Var_k.sigma, Fun_k.G, z_k_Repmat);
-    Fun_k.PSIgSigma_diagVec = full(PSIgSigma_diagVec_k);
-    Fun_k.PSIgG_diagVec = full(PSIgG_k_diagVec);
     % FB for PHI
     PSIphi_k = FunObj.FB_PHI(Var_k.gamma, Fun_k.PHI, z_k_Repmat);
-    Fun_k.PSIphi = full(PSIphi_k);    
-    [PSIphiGamma_diagVec_k, PSIphiPHI_diagVec_k] = FunObj.FB_PHI_grad(Var_k.gamma, Fun_k.PHI, z_k_Repmat);
-    Fun_k.PSIphiGamma_diagVec = full(PSIphiGamma_diagVec_k);
-    Fun_k.PSIphiPHI_diagVec = full(PSIphiPHI_diagVec_k);
-    
+    Fun_k.PSIphi = full(PSIphi_k);       
 else
     % both s and z update, hence update function about PHI and FB
     % PHI
@@ -76,15 +66,9 @@ else
     % FB for G
     PSIg_k = FunObj.FB_G(Var_k.sigma, Fun_k.G, z_k_Repmat);
     Fun_k.PSIg = full(PSIg_k);    
-    [PSIgSigma_diagVec_k, PSIgG_k_diagVec] = FunObj.FB_G_grad(Var_k.sigma, Fun_k.G, z_k_Repmat);
-    Fun_k.PSIgSigma_diagVec = full(PSIgSigma_diagVec_k);
-    Fun_k.PSIgG_diagVec = full(PSIgG_k_diagVec);
     % FB for PHI
     PSIphi_k = FunObj.FB_PHI(Var_k.gamma, Fun_k.PHI, z_k_Repmat);
-    Fun_k.PSIphi = full(PSIphi_k);    
-    [PSIphiGamma_diagVec_k, PSIphiPHI_diagVec_k] = FunObj.FB_PHI_grad(Var_k.gamma, Fun_k.PHI, z_k_Repmat);
-    Fun_k.PSIphiGamma_diagVec = full(PSIphiGamma_diagVec_k);
-    Fun_k.PSIphiPHI_diagVec = full(PSIphiPHI_diagVec_k);           
+    Fun_k.PSIphi = full(PSIphi_k);             
 end
 
 end

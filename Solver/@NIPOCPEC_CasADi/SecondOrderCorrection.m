@@ -1,4 +1,4 @@
-function Var_SOC = SecondOrderCorrection(self, Var, Fun, KKT_Residual, KKT_Matrix, Fun_full)
+function Var_SOC = SecondOrderCorrection(self, Var, Jac, KKT_Residual, KKT_Matrix, Fun_full)
 %UNTITLED21 Summary of this function goes here
 %   Detailed explanation goes here
 OCPEC = self.OCPEC;
@@ -12,8 +12,8 @@ nu_G_Repmat = repmat(Option.RegularParam.nu_G, 1, nStages);
 KKT_Residual_SOC = struct('G_Fsb', [], 'C_Fsb', [], 'F_Fsb', [], 'PHI_Fsb', [],...
    'HxTlambdaNext', KKT_Residual.HxTlambdaNext,  'HuT', KKT_Residual.HuT, 'HpT', KKT_Residual.HpT, 'HwT', KKT_Residual.HwT);
 
-G_Fsb_Correct = FunObj.G_Fsb(Fun_full.PSIg, Fun.PSIgG_diagVec, nu_G_Repmat);
-PHI_Fsb_Correct = FunObj.PHI_Fsb(Fun_full.PSIphi, Fun.PSIphiPHI_diagVec, nu_G_Repmat);
+G_Fsb_Correct = FunObj.G_Fsb(Fun_full.PSIg, Jac.PSIgG_diagVec, nu_G_Repmat);
+PHI_Fsb_Correct = FunObj.PHI_Fsb(Fun_full.PSIphi, Jac.PSIphiPHI_diagVec, nu_G_Repmat);
 
 KKT_Residual_SOC.G_Fsb = KKT_Residual.G_Fsb + full(G_Fsb_Correct);
 KKT_Residual_SOC.C_Fsb = KKT_Residual.C_Fsb + Fun_full.C;
