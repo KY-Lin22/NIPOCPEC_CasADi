@@ -102,14 +102,14 @@ solver.Option.RegularParam.nu_G = 1e-7;
 solver.Option.RegularParam.nu_H = 0;
 solver.Option.linearSystemSolver = 'linsolve_Sym_dense'; % 'linsolve_Sym_dense', 'mldivide_dense', 'mldivide_sparse', 'pinv'
 
-solver.Option.employSecondOrderCorrection = true;
+solver.Option.employSecondOrderCorrection = false;
 solver.Option.LineSearch.stepSize_Min = 0.01;
 solver.Option.employFeasibilityRestorationPhase = true;
 
 solver.Option.zInit = 1e-1; 
-solver.Option.zEnd  = 1e-3;
+solver.Option.zEnd  = 1e-1;
 solver.Option.sInit = 1e-1;
-solver.Option.sEnd  = 1e-3;
+solver.Option.sEnd  = 1e-1;
 
 [solution, Info] = solver.solveOCPEC(Var_Init);
 

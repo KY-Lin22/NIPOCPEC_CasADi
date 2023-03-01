@@ -70,7 +70,7 @@ Gen_InitialGuess = load('Gen_InitialGuess.mat');
 Var_Init = Gen_InitialGuess.Var;
 
 %% solving MPEC
-solver.Option.printLevel = 0;
+solver.Option.printLevel = 2;
 solver.Option.maxIterNum = 500;
 solver.Option.Tolerance.KKT_Error_Total = 1e-4;
 solver.Option.Tolerance.KKT_Error_Feasibility = 1e-6;
@@ -82,6 +82,7 @@ solver.Option.RegularParam.nu_G = 1e-7;
 solver.Option.RegularParam.nu_H = 0;
 solver.Option.linearSystemSolver = 'linsolve_Sym_dense'; % 'linsolve_Sym_dense', 'mldivide_dense', 'mldivide_sparse', 'pinv'
 
+solver.Option.employSecondOrderCorrection = false;
 solver.Option.LineSearch.stepSize_Min = 0.001;
 solver.Option.employFeasibilityRestorationPhase = true;
 
