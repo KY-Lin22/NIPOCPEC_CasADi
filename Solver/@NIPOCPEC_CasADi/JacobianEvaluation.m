@@ -1,4 +1,4 @@
-function Jac = JacobianEvaluation(self, Var, Fun, s, z, mode, FRP)
+function Jac = JacobianEvaluation(self, Var, s, mode, FRP)
 %JacobianEvaluation
 %   return struct Jac with fileds including the following values
 % Lx Lu Lp Lw
@@ -6,10 +6,6 @@ function Jac = JacobianEvaluation(self, Var, Fun, s, z, mode, FRP)
 % Cx Cu Cp Cw
 % Fx Fu Fp Fw
 % PHIx PHIu PHIp PHIw
-% PSIgSigma_diagVec
-% PSIgG_diagVec
-% PSIphiGamma_diagVec 
-% PSIphiPHI_diagVec
 
 OCPEC = self.OCPEC;
 FunObj = self.FunObj;
@@ -39,19 +35,12 @@ end
 [Fx, Fu, Fp, Fw] = FunObj.F_grad(Var.x, Var.u, Var.p, Var.w);
 [PHIx, PHIu, PHIp, PHIw] = FunObj.PHI_grad(Var.x, Var.u, Var.p, Var.w, s);
 
-% FB Jacobian for G and PHI
-[PSIgSigma_diagVec, PSIgG_diagVec] = FunObj.FB_G_grad(Var.sigma, Fun.G, z);
-[PSIphiGamma_diagVec, PSIphiPHI_diagVec] = FunObj.FB_PHI_grad(Var.gamma, Fun.PHI, z);
 %
 Jac = struct('Lx', full(Lx), 'Lu', full(Lu), 'Lp', full(Lp), 'Lw', full(Lw),...
     'Gx', full(Gx), 'Gu', full(Gu), 'Gp', full(Gp), 'Gw', full(Gw),...
     'Cx', full(Cx), 'Cu', full(Cu), 'Cp', full(Cp), 'Cw', full(Cw),...
     'Fx', full(Fx), 'Fu', full(Fu), 'Fp', full(Fp), 'Fw', full(Fw),...
-    'PHIx', full(PHIx), 'PHIu', full(PHIu), 'PHIp', full(PHIp), 'PHIw', full(PHIw),...
-    'PSIgSigma_diagVec', full(PSIgSigma_diagVec),...
-    'PSIgG_diagVec', full(PSIgG_diagVec),...
-    'PSIphiGamma_diagVec', full(PSIphiGamma_diagVec),...
-    'PSIphiPHI_diagVec', full(PSIphiPHI_diagVec));
+    'PHIx', full(PHIx), 'PHIu', full(PHIu), 'PHIp', full(PHIp), 'PHIw', full(PHIw));
 
 end
 

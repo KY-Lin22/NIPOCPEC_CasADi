@@ -177,7 +177,7 @@ classdef NIPOCPEC_CasADi < handle
         % function, jacobian and Hessian evaluation
         Fun = FunctionEvaluation(self, Var, s, z, mode, FRP)        
         
-        Jac = JacobianEvaluation(self, Var, Fun, s, z, mode, FRP)
+        Jac = JacobianEvaluation(self, Var, s, mode, FRP)
         
         Hessian = HessianEvaluation(self, Var, Jac, s, mode, FRP)
         

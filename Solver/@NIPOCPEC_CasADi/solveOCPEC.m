@@ -50,6 +50,8 @@ end
 
 %%
 Option = self.Option;
+FunObj = self.FunObj;
+
 maxIterNum = Option.maxIterNum;
 Tol = Option.Tolerance;
 betaInit = Option.LineSearch.betaInit;
@@ -102,7 +104,15 @@ for k = 1 : maxIterNum + 1
     %% step 1: Evaluate KKT Residual of Previous Iterate
     % Jacobian
     Jacobian_TimeStart = tic;
-    Jac = self.JacobianEvaluation(Var, Fun, s, z, 'Regular', []);
+    Jac = self.JacobianEvaluation(Var, s, 'Regular', []);   
+    % FB Jacobian for G and PHI
+    [PSIgSigma_diagVec, PSIgG_diagVec] = FunObj.FB_G_grad(Var.sigma, Fun.G, z);
+    [PSIphiGamma_diagVec, PSIphiPHI_diagVec] = FunObj.FB_PHI_grad(Var.gamma, Fun.PHI, z);   
+    Jac.PSIgSigma_diagVec   = full(PSIgSigma_diagVec);
+    Jac.PSIgG_diagVec       = full(PSIgG_diagVec);
+    Jac.PSIphiGamma_diagVec = full(PSIphiGamma_diagVec);
+    Jac.PSIphiPHI_diagVec   = full(PSIphiPHI_diagVec);
+    
     TimeElasped_Jacobian = toc(Jacobian_TimeStart);   
     
     % totalCost, KKT residual and error
