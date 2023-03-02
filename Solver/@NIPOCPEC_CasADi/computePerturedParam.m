@@ -6,23 +6,25 @@ Option = self.Option;
 FunObj = self.FunObj;
 
 nStages = OCPEC.nStages;
+
+Tol = Option.Tolerance;
 sEnd = Option.sEnd;
 zEnd = Option.zEnd;
 
-kappa_s_times = 0.2;
-kappa_s_exp = 1.5;
-kappa_z_times = 0.2;
-kappa_z_exp = 1.5;
+kappa_F = Option.kappa_F;
+kappa_s_times = Option.kappa_s_times;
+kappa_s_exp = Option.kappa_s_exp;
+kappa_z_times = Option.kappa_z_times;
+kappa_z_exp = Option.kappa_z_exp;
 
-% set scaling parameter and threshold 
-kappa_F = 1; 
-threshold_sz = max([s, z]);
+% threshold 
+threshold_sz = max([s, z, Tol.KKT_Error_Total]);
 
-% constraint violation (L Inf norm)
-totalCstrVio_LInfNorm = norm(reshape([Fun_k.PSIg; Fun_k.C; Fun_k.F; Fun_k.PSIphi], [], 1), Inf); 
+% constraint violation (L_Inf norm)
+totalCstrVio_L_InfNorm = norm(reshape([Fun_k.PSIg; Fun_k.C; Fun_k.F; Fun_k.PSIphi], [], 1), Inf); 
 
 %% update s and z
-if totalCstrVio_LInfNorm < kappa_F * threshold_sz
+if totalCstrVio_L_InfNorm < kappa_F * threshold_sz
     % close to the optimal solution, need to set them a smaller value
     s_k_trail = min([kappa_s_times .* s, s.^kappa_s_exp]);
     s_k = max([s_k_trail, sEnd]);
