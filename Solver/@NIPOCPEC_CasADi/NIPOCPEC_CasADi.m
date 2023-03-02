@@ -199,6 +199,8 @@ classdef NIPOCPEC_CasADi < handle
         % Feasibility Restoration Phase
         [Var_FRP, Info] = FeasibilityRestorationPhase_MinDeviation(self, Var_Ref, Fun_Ref, Jac_Ref, s, z)
         
+        [eta, lambda] = computeDualVar_lsqminnorm(self, Var, s)
+        
          % compute perturbed parameter s and z
         [s_k, z_k, Fun_k] = computePerturedParam(self, Var_k, Fun_k, s, z)
         

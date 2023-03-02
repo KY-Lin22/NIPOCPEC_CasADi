@@ -14,6 +14,7 @@ maxIterNum = Option.FRP.maxIterNum;
 nu_Z = Option.FRP.nu_Z;
 nu_M = Option.FRP.nu_M;
 betaInit = Option.FRP.betaInit;
+employLSMN = Option.FRP.employLeastSquareMinNorm;
 
 if (Option.printLevel == 1) || (Option.printLevel == 2)
     disp(' ')
@@ -92,6 +93,10 @@ for j = 1 : maxIterNum + 1
             % return a less infeasibility solution (reusing Var except the dual variables of equality-type constraint)
             Var_FRP = struct('x', Var.x, 'u', Var.u, 'p', Var.p, 'w', Var.w,...
                 'sigma', Var.sigma, 'eta', zeros(Dim.eta, nStages), 'lambda', zeros(Dim.lambda, nStages), 'gamma', Var.gamma);
+            % compute the dual variables of equality-type constraint using lsqminnorm (Optional)
+            if employLSMN
+                [Var_FRP.eta, Var_FRP.lambda] = self.computeDualVar_lsqminnorm(Var_FRP, s);
+            end
             % create Fun_FRP (reusing Fun except cost function)
             L_T = FunObj.L_T(Var_FRP.x(:, end), Var_FRP.u(:, end), Var_FRP.p(:, end), Var_FRP.w(:, end));
             L_S = FunObj.L_S(Var_FRP.x, Var_FRP.u, Var_FRP.p, Var_FRP.w);
@@ -170,4 +175,3 @@ if (Option.printLevel == 1) || (Option.printLevel == 2)
 end
 
 end
-

@@ -42,6 +42,9 @@ Option.FRP.rho = 0.5;
 Option.FRP.stepSize_Min = 0.0001;
 Option.FRP.stepSize_DecayRate = 0.5;
 
+Option.FRP.employLeastSquareMinNorm = true;
+Option.FRP.LAMBDA_threshold = 1000;
+
 %% Options for Perturbed Parameter
 % init and end perturbed parameter z in smoothing FB function
 Option.zInit = 0.1; 
