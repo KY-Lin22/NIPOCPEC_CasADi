@@ -7,8 +7,6 @@ function Fun = FunctionEvaluation(self, Var, s, z, mode, FRP)
 
 OCPEC = self.OCPEC;
 FunObj = self.FunObj;
-s_Repmat = repmat(s, 1, OCPEC.nStages);
-z_Repmat = repmat(z, 1, OCPEC.nStages);
 xPrev = [OCPEC.InitState, Var.x(:, 1 : end - 1)];
 
 % cost function
@@ -26,11 +24,11 @@ end
 G = FunObj.G(Var.x, Var.u, Var.p, Var.w);
 C = FunObj.C(Var.x, Var.u, Var.p, Var.w);
 F = FunObj.F(xPrev, Var.x, Var.u, Var.p, Var.w);
-PHI = FunObj.PHI(Var.x, Var.u, Var.p, Var.w, s_Repmat);
+PHI = FunObj.PHI(Var.x, Var.u, Var.p, Var.w, s);
 
 % FB function for G and PHI
-PSIg = FunObj.FB_G(Var.sigma, full(G), z_Repmat);
-PSIphi = FunObj.FB_PHI(Var.gamma, full(PHI), z_Repmat);
+PSIg = FunObj.FB_G(Var.sigma, full(G), z);
+PSIphi = FunObj.FB_PHI(Var.gamma, full(PHI), z);
 
 %
 Fun = struct('L', full(L),...

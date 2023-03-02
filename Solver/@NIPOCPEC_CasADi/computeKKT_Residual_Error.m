@@ -6,15 +6,15 @@ Option = self.Option;
 FunObj = self.FunObj;
 Dim = OCPEC.Dim;
 nStages = OCPEC.nStages;
-nu_G_Repmat = repmat(Option.RegularParam.nu_G, 1, nStages);
+nu_G = Option.RegularParam.nu_G;
 lambdaNext = [Var.lambda(:, 2 : end), zeros(Dim.lambda, 1)];
 
 %% KKT Residual
 % primal feasibility
-G_Fsb = FunObj.G_Fsb(Fun.PSIg, Jac.PSIgG_diagVec, nu_G_Repmat);
+G_Fsb = FunObj.G_Fsb(Fun.PSIg, Jac.PSIgG_diagVec, nu_G);
 C_Fsb = Fun.C;
 F_Fsb = Fun.F;
-PHI_Fsb = FunObj.PHI_Fsb(Fun.PSIphi, Jac.PSIphiPHI_diagVec, nu_G_Repmat);
+PHI_Fsb = FunObj.PHI_Fsb(Fun.PSIphi, Jac.PSIphiPHI_diagVec, nu_G);
 % dual feasibility
 [HxT, HuT, HpT, HwT] = FunObj.HAM_grad(Var.sigma, Var.eta, Var.lambda, Var.gamma,...
     Jac.Lx, Jac.Lu, Jac.Lp, Jac.Lw, Jac.Gx, Jac.Gu, Jac.Gp, Jac.Gw, Jac.Cx, Jac.Cu, Jac.Cp, Jac.Cw,...

@@ -15,8 +15,7 @@ OCPEC = self.OCPEC;
 FunObj = self.FunObj;
 Dim = OCPEC.Dim;
 nStages = OCPEC.nStages;
-s_Repmat = repmat(s, 1, nStages);
-z_Repmat = repmat(z, 1, OCPEC.nStages);
+
 % cost function Jacobian
 switch mode
     case 'Regular'
@@ -38,11 +37,11 @@ end
 [Gx, Gu, Gp, Gw] = FunObj.G_grad(Var.x, Var.u, Var.p, Var.w);
 [Cx, Cu, Cp, Cw] = FunObj.C_grad(Var.x, Var.u, Var.p, Var.w);
 [Fx, Fu, Fp, Fw] = FunObj.F_grad(Var.x, Var.u, Var.p, Var.w);
-[PHIx, PHIu, PHIp, PHIw] = FunObj.PHI_grad(Var.x, Var.u, Var.p, Var.w, s_Repmat);
+[PHIx, PHIu, PHIp, PHIw] = FunObj.PHI_grad(Var.x, Var.u, Var.p, Var.w, s);
 
 % FB Jacobian for G and PHI
-[PSIgSigma_diagVec, PSIgG_diagVec] = FunObj.FB_G_grad(Var.sigma, Fun.G, z_Repmat);
-[PSIphiGamma_diagVec, PSIphiPHI_diagVec] = FunObj.FB_PHI_grad(Var.gamma, Fun.PHI, z_Repmat);
+[PSIgSigma_diagVec, PSIgG_diagVec] = FunObj.FB_G_grad(Var.sigma, Fun.G, z);
+[PSIphiGamma_diagVec, PSIphiPHI_diagVec] = FunObj.FB_PHI_grad(Var.gamma, Fun.PHI, z);
 %
 Jac = struct('Lx', full(Lx), 'Lu', full(Lu), 'Lp', full(Lp), 'Lw', full(Lw),...
     'Gx', full(Gx), 'Gu', full(Gu), 'Gp', full(Gp), 'Gw', full(Gw),...

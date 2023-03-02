@@ -6,7 +6,6 @@ OCPEC = self.OCPEC;
 FunObj = self.FunObj;
 Dim = OCPEC.Dim;
 nStages = OCPEC.nStages;
-s_Repmat = repmat(s, 1, nStages);
 
 switch mode
     case 'Regular'
@@ -17,7 +16,7 @@ switch mode
         switch self.Option.HessianApproximation
             case 'Exact'
                 HAM_hessian = FunObj.HAM_hessian(Var.x, Var.u, Var.p, Var.w,...
-                    Var.sigma, Var.eta, Var.lambda, Var.gamma, s_Repmat);  
+                    Var.sigma, Var.eta, Var.lambda, Var.gamma, s);  
                 Hessian = full(HAM_hessian);
             case 'CostFunction'
                 L_S_hessian = FunObj.L_S_hessian(Var.x, Var.u, Var.p, Var.w);

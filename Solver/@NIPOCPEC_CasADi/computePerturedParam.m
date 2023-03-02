@@ -1,11 +1,9 @@
 function [s_k, z_k, Fun_k] = computePerturedParam(self, Var_k, Fun_k, s, z)
 %UNTITLED23 Summary of this function goes here
 %   Detailed explanation goes here
-OCPEC = self.OCPEC;
+
 Option = self.Option;
 FunObj = self.FunObj;
-
-nStages = OCPEC.nStages;
 
 Tol = Option.Tolerance;
 sEnd = Option.sEnd;
@@ -37,39 +35,36 @@ else
 end
 
 %% update Fun_k
-s_k_Repmat = repmat(s_k, 1, nStages);
-z_k_Repmat = repmat(z_k, 1, nStages);
-
 if (s_k == s) && (z_k == z)
     % both s and z do not update, hence no function need to be updated
     
 elseif (s_k ~= s) && (z_k == z)
     % only s is update, hence update function about PHI
     % PHI
-    PHI_k = FunObj.PHI(Var_k.x, Var_k.u, Var_k.p, Var_k.w, s_k_Repmat);
+    PHI_k = FunObj.PHI(Var_k.x, Var_k.u, Var_k.p, Var_k.w, s_k);
     Fun_k.PHI = full(PHI_k);
     % FB for PHI
-    PSIphi_k = FunObj.FB_PHI(Var_k.gamma, Fun_k.PHI, z_k_Repmat);
+    PSIphi_k = FunObj.FB_PHI(Var_k.gamma, Fun_k.PHI, z_k);
     Fun_k.PSIphi = full(PSIphi_k);      
        
 elseif (s_k == s) && (z_k ~= z)
     % only z is update, hence update function about FB
     % FB for G
-    PSIg_k = FunObj.FB_G(Var_k.sigma, Fun_k.G, z_k_Repmat);
+    PSIg_k = FunObj.FB_G(Var_k.sigma, Fun_k.G, z_k);
     Fun_k.PSIg = full(PSIg_k);    
     % FB for PHI
-    PSIphi_k = FunObj.FB_PHI(Var_k.gamma, Fun_k.PHI, z_k_Repmat);
+    PSIphi_k = FunObj.FB_PHI(Var_k.gamma, Fun_k.PHI, z_k);
     Fun_k.PSIphi = full(PSIphi_k);       
 else
     % both s and z update, hence update function about PHI and FB
     % PHI
-    PHI_k = FunObj.PHI(Var_k.x, Var_k.u, Var_k.p, Var_k.w, s_k_Repmat);
+    PHI_k = FunObj.PHI(Var_k.x, Var_k.u, Var_k.p, Var_k.w, s_k);
     Fun_k.PHI = full(PHI_k);
     % FB for G
-    PSIg_k = FunObj.FB_G(Var_k.sigma, Fun_k.G, z_k_Repmat);
+    PSIg_k = FunObj.FB_G(Var_k.sigma, Fun_k.G, z_k);
     Fun_k.PSIg = full(PSIg_k);    
     % FB for PHI
-    PSIphi_k = FunObj.FB_PHI(Var_k.gamma, Fun_k.PHI, z_k_Repmat);
+    PSIphi_k = FunObj.FB_PHI(Var_k.gamma, Fun_k.PHI, z_k);
     Fun_k.PSIphi = full(PSIphi_k);             
 end
 

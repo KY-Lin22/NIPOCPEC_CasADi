@@ -5,15 +5,14 @@ OCPEC = self.OCPEC;
 Option = self.Option;
 FunObj = self.FunObj;
 Dim = OCPEC.Dim;
-nStages = OCPEC.nStages;
-nu_G_Repmat = repmat(Option.RegularParam.nu_G, 1, nStages);
+nu_G = Option.RegularParam.nu_G;
 
 % SOC KKT residual
 KKT_Residual_SOC = struct('G_Fsb', [], 'C_Fsb', [], 'F_Fsb', [], 'PHI_Fsb', [],...
    'HxTlambdaNext', KKT_Residual.HxTlambdaNext,  'HuT', KKT_Residual.HuT, 'HpT', KKT_Residual.HpT, 'HwT', KKT_Residual.HwT);
 
-G_Fsb_Correct = FunObj.G_Fsb(Fun_full.PSIg, Jac.PSIgG_diagVec, nu_G_Repmat);
-PHI_Fsb_Correct = FunObj.PHI_Fsb(Fun_full.PSIphi, Jac.PSIphiPHI_diagVec, nu_G_Repmat);
+G_Fsb_Correct = FunObj.G_Fsb(Fun_full.PSIg, Jac.PSIgG_diagVec, nu_G);
+PHI_Fsb_Correct = FunObj.PHI_Fsb(Fun_full.PSIphi, Jac.PSIphiPHI_diagVec, nu_G);
 
 KKT_Residual_SOC.G_Fsb = KKT_Residual.G_Fsb + full(G_Fsb_Correct);
 KKT_Residual_SOC.C_Fsb = KKT_Residual.C_Fsb + Fun_full.C;
