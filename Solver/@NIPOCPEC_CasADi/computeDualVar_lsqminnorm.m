@@ -34,9 +34,8 @@ for n = nStages: -1 : 1
     
     Fx_n = Jac.Fx(:, 1 + (n - 1) * Dim.x : n * Dim.x);
     Fu_n = Jac.Fu(:, 1 + (n - 1) * Dim.u : n * Dim.u);
-    Fp_n = Jac.Fp(:, 1 + (n - 1) * Dim.p : n * Dim.p);
-    Fw_n = Jac.Fw(:, 1 + (n - 1) * Dim.w : n * Dim.w);   
-    F_grad_n = [Fx_n, Fu_n, Fp_n, Fw_n];
+    Fp_n = Jac.Fp(:, 1 + (n - 1) * Dim.p : n * Dim.p); 
+    F_grad_n = [Fx_n, Fu_n, Fp_n, zeros(Dim.lambda, Dim.w)];
 
     PHIp_n = Jac.PHIp(:, 1 + (n - 1) * Dim.p : n * Dim.p);
     PHIw_n = Jac.PHIw(:, 1 + (n - 1) * Dim.w : n * Dim.w);     

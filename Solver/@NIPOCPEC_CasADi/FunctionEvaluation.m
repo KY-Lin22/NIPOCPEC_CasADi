@@ -12,7 +12,7 @@ xPrev = [OCPEC.InitState, Var.x(:, 1 : end - 1)];
 % cost function
 switch mode
     case 'Regular'
-        L_T = FunObj.L_T(Var.x(:, end), Var.u(:, end), Var.p(:, end), Var.w(:, end));
+        L_T = FunObj.L_T(Var.x(:, end), Var.p(:, end));
         L_S = FunObj.L_S(Var.x, Var.u, Var.p, Var.w);        
         L = full(L_S);
         L(:, end) = L(:, end) + full(L_T);
@@ -21,10 +21,10 @@ switch mode
 end
 
 % constraint
-G = FunObj.G(Var.x, Var.u, Var.p, Var.w);
+G = FunObj.G(Var.x, Var.u, Var.p);
 C = FunObj.C(Var.x, Var.u, Var.p, Var.w);
-F = FunObj.F(xPrev, Var.x, Var.u, Var.p, Var.w);
-PHI = FunObj.PHI(Var.x, Var.u, Var.p, Var.w, s);
+F = FunObj.F(xPrev, Var.x, Var.u, Var.p);
+PHI = FunObj.PHI(Var.p, Var.w, s);
 
 % FB function for G and PHI
 PSIg = FunObj.FB_G(Var.sigma, full(G), z);
