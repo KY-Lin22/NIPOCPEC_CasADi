@@ -6,7 +6,7 @@ TimeStart = tic;
 OCPEC = self.OCPEC;
 Option = self.Option;
 Dim = OCPEC.Dim;
-nStages = OCPEC.nStages;
+N = OCPEC.nStages;
 
 % regroup KKT residual
 T = [KKT_Residual.G_Fsb;...
@@ -23,14 +23,12 @@ BL = KKT_Matrix.BL;
 BU = KKT_Matrix.BU;
 
 %% backward recursion for Frak_A and Frak_b (using fold/mapaccum latter?)
-Frak_A = zeros(Dim.Y, Dim.Y * nStages);
-Frak_b = zeros(Dim.Y, nStages);
-% initialization
-J_N = J(:, Dim.Y * (nStages - 1) + 1: Dim.Y * nStages);
-T_N = T(:, nStages);
-Frak_A(:, Dim.Y * (nStages - 1) + 1: Dim.Y * nStages) = J_N;
-Frak_b(:, nStages) = T_N;
-for n = nStages - 1 : -1 : 1
+Frak_A = zeros(Dim.Y, Dim.Y * N);
+Frak_b = zeros(Dim.Y, N);
+% initialization: Frak_A_N and Frak_b_N
+Frak_A(:, Dim.Y * (N - 1) + 1 : Dim.Y * N) = J(:, Dim.Y * (N - 1) + 1 : Dim.Y * N);
+Frak_b(:, N) = T(:, N);
+for n = N - 1 : -1 : 1
     % load 
     J_n = J(:, Dim.Y * (n - 1) + 1 : Dim.Y * n);
     T_n = T(:, n);
@@ -64,9 +62,9 @@ for n = nStages - 1 : -1 : 1
 end
 
 %% forward recursion for dY(using fold/mapaccum latter?)
-dY = zeros(Dim.Y, nStages);
+dY = zeros(Dim.Y, N);
 dY_nPrev = zeros(Dim.Y, 1);
-for n = 1 : nStages
+for n = 1 : N
     %
     Frak_A_n = Frak_A(:, Dim.Y * (n - 1) + 1 : Dim.Y * n);
     Frak_b_n = Frak_b(:, n);
