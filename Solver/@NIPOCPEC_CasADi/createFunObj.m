@@ -278,7 +278,8 @@ for i = 1 : Dim.Node(4)
     J(i, i) = diagVec(i);
 end
 J(1 : Dim.Node(4), Dim.Node(4) + 1 : Dim.Node(8)) = [-G_grad; C_grad; F_grad; -PHI_grad];
-J(Dim.Node(4) + 1 : Dim.Node(8), :) = [-G_grad', C_grad', F_grad', -PHI_grad', Hessian + nu_H * SX.eye(Dim.Z)];
+J(Dim.Node(4) + 1 : Dim.Node(8), 1 : Dim.Node(4)) = [-G_grad', C_grad', F_grad', -PHI_grad'];
+J(Dim.Node(4) + 1 : Dim.Node(8), Dim.Node(4) + 1 : Dim.Node(8)) = Hessian + nu_H * SX.eye(Dim.Z);
 
 J_FunObj = Function('J',...
     {nu_G, nu_J, nu_H,...
