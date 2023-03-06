@@ -4,7 +4,6 @@ function KKT_Matrix = computeKKT_Matrix(self, Jac, Hessian)
 OCPEC = self.OCPEC;
 Option = self.Option;
 FunObj = self.FunObj;
-Dim = OCPEC.Dim;
 
 % regular parameter
 nu_G = Option.RegularParam.nu_G;
@@ -25,11 +24,8 @@ J = FunObj.J(nu_G, nu_J, nu_H,...
 KKT_Matrix.J = full(J);
 
 %% KKT off-diagnal matrix: BL and BU
-BL = [zeros(Dim.sigma + Dim.eta, Dim.Y);...
-    zeros(Dim.lambda, Dim.LAMBDA), eye(Dim.x), zeros(Dim.lambda, Dim.u + Dim.p + Dim.w);...
-    zeros(Dim.gamma + Dim.Z, Dim.Y)];
-KKT_Matrix.BL = BL;  
-KKT_Matrix.BU = BL';
+KKT_Matrix.BL = OCPEC.BL;  
+KKT_Matrix.BU = OCPEC.BU;
 
 end
 
