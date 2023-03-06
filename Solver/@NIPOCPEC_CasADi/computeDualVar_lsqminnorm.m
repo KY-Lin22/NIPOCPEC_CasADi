@@ -26,16 +26,15 @@ for n = nStages: -1 : 1
     Gu_n = Jac.Gu(:, 1 + (n - 1) * Dim.u : n * Dim.u);
     Gp_n = Jac.Gp(:, 1 + (n - 1) * Dim.p : n * Dim.p);
 
-    Cx_n = Jac.Cx(:, 1 + (n - 1) * Dim.x : n * Dim.x);
-    Cu_n = Jac.Cu(:, 1 + (n - 1) * Dim.u : n * Dim.u);
-    Cp_n = Jac.Cp(:, 1 + (n - 1) * Dim.p : n * Dim.p);
-    Cw_n = Jac.Cw(:, 1 + (n - 1) * Dim.w : n * Dim.w);
-    C_grad_n = [Cx_n, Cu_n, Cp_n, Cw_n];
-    
-    Fx_n = Jac.Fx(:, 1 + (n - 1) * Dim.x : n * Dim.x);
-    Fu_n = Jac.Fu(:, 1 + (n - 1) * Dim.u : n * Dim.u);
-    Fp_n = Jac.Fp(:, 1 + (n - 1) * Dim.p : n * Dim.p); 
-    F_grad_n = [Fx_n, Fu_n, Fp_n, zeros(Dim.lambda, Dim.w)];
+    C_grad_n = [Jac.Cx(:, 1 + (n - 1) * Dim.x : n * Dim.x),...
+        Jac.Cu(:, 1 + (n - 1) * Dim.u : n * Dim.u),...
+        Jac.Cp(:, 1 + (n - 1) * Dim.p : n * Dim.p),...
+        Jac.Cw(:, 1 + (n - 1) * Dim.w : n * Dim.w)];
+     
+    F_grad_n = [Jac.Fx(:, 1 + (n - 1) * Dim.x : n * Dim.x),...
+        Jac.Fu(:, 1 + (n - 1) * Dim.u : n * Dim.u),...
+        Jac.Fp(:, 1 + (n - 1) * Dim.p : n * Dim.p),...
+        zeros(Dim.lambda, Dim.w)];
 
     PHIp_n = Jac.PHIp(:, 1 + (n - 1) * Dim.p : n * Dim.p);
     PHIw_n = Jac.PHIw(:, 1 + (n - 1) * Dim.w : n * Dim.w);     
