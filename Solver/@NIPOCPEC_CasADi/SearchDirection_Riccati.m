@@ -40,8 +40,9 @@ for n = N - 1 : -1 : 1
     switch Option.linearSystemSolver
         case 'linsolve_Sym_dense'
             % solve linear system using linsolve(dense) with 'SYM' option
+            invFrak_A_nNext_BL = zeros(Dim.Y, Dim.Y);
             opts.SYM = true;
-            invFrak_A_nNext_BL = linsolve(Frak_A_nNext, BL, opts);
+            invFrak_A_nNext_BL(:, Dim.Node(4) + 1 : Dim.Node(5)) = linsolve(Frak_A_nNext, BL(:, Dim.Node(4) + 1 : Dim.Node(5)), opts);
             invFrak_A_nNext_Frak_b_nNext = linsolve(Frak_A_nNext, Frak_b_nNext, opts);
             Frak_A_n = J_n - BU * invFrak_A_nNext_BL;
             Frak_b_n = T_n - BU * invFrak_A_nNext_Frak_b_nNext;
