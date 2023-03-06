@@ -19,7 +19,7 @@ Option.RegularParam.nu_G = 1e-8; % non-negative definite of diagonal matrix rela
 Option.RegularParam.nu_H = 0; % non-positive definite of Hessian matrix
 
 %% Options for Search Direction Evaluation
-Option.linearSystemSolver = 'linsolve_Sym_dense'; % 'linsolve_Sym_dense', 'mldivide_dense', 'mldivide_sparse', 'pinv'
+Option.linearSystemSolver = 'linsolve_Sym_dense'; % 'linsolve_Sym_dense', 'mldivide_dense', 'mldivide_sparse'
 
 %% Options for Line Search
 Option.employSecondOrderCorrection = true;

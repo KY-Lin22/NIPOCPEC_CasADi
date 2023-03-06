@@ -54,10 +54,8 @@ for n = N - 1 : -1 : 1
             % solve linear system using mldivide(sparse)
             Frak_A_n = sparse(J_n) - sparse(BU) * (sparse(Frak_A_nNext)\BL);
             Frak_b_n = T_n - sparse(BU) * (sparse(Frak_A_nNext)\Frak_b_nNext);            
-        case 'pinv'
-            % solve linear system using pinv
-            Frak_A_n = J_n - BU * pinv(Frak_A_nNext) * BL;
-            Frak_b_n = T_n - BU * pinv(Frak_A_nNext) * Frak_b_nNext;
+        otherwise
+            error('specified method is not supported')
     end
     % record
     Frak_A{n} = Frak_A_n;
@@ -83,9 +81,8 @@ for n = 1 : N
         case 'mldivide_sparse'
             % solve linear system using mldivide(sparse)
             dY(:, n) = - sparse(Frak_A_n)\(Frak_b_n + sparse(BL) * dY_nPrev);
-        case 'pinv'
-            % solve linear system using pinv
-            dY(:, n) = - pinv(Frak_A_n) * (Frak_b_n + BL * dY_nPrev);
+        otherwise
+            error('specified method is not supported')
     end
     dY_nPrev = dY(:, n);
 end
