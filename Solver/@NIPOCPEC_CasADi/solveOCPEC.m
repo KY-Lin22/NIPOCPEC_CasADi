@@ -206,8 +206,7 @@ for k = 1 : maxIterNum + 1
     
     %% step 5: Search Direction Evaluation
     [dY_k, Info_SD] = self.SearchDirection_Riccati(KKT_Residual, KKT_Matrix);
-    TimeElasped_SearchDirection = Info_SD.Time;
-    
+    TimeElasped_SearchDirection = Info_SD.Time;  
 
     %% step 6: Merit Line Search    
     [Var_LS, Info_LS] = self.LineSearch_Merit(Var, Fun, Jac, beta, s, z,...

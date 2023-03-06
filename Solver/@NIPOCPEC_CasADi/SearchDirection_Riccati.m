@@ -22,7 +22,7 @@ J  = KKT_Matrix.J;
 BL = KKT_Matrix.BL; 
 BU = KKT_Matrix.BU;
 
-%% backward recursion for Frak_A and Frak_b (using fold/mapaccum latter?)
+%% backward recursion for Frak_A and Frak_b
 Frak_A = cell(1, N);
 Frak_b = zeros(Dim.Y, N);
 % initialization: Frak_A_N and Frak_b_N
@@ -64,7 +64,7 @@ for n = N - 1 : -1 : 1
     Frak_b(:, n) = Frak_b_n;
 end
 
-%% forward recursion for dY(using fold/mapaccum latter?)
+%% forward recursion for dY
 dY = zeros(Dim.Y, N);
 dY_nPrev = zeros(Dim.Y, 1);
 for n = 1 : N
