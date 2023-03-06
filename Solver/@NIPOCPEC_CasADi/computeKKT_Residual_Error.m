@@ -35,12 +35,15 @@ LAMBDA_trial = (LAMBDA_norm)/(nStages * Dim.LAMBDA);
 stationarityScaling = max([scaling_max, LAMBDA_trial])/scaling_max;
 
 % compute KKT_Error
-Feasibility = [Fun.PSIg; Fun.C; Fun.F; Fun.PSIphi];
-Stationarity = [KKT_Residual.HxTlambdaNext; KKT_Residual.HuT; KKT_Residual.HpT; KKT_Residual.HwT];
+KKT_Error.Feasibility = max([norm(reshape(Fun.PSIg, [], 1), Inf),...
+    norm(reshape(Fun.C, [], 1), Inf),...
+    norm(reshape(Fun.F, [], 1), Inf),...
+    norm(reshape(Fun.PSIphi, [], 1), Inf)]);
 
-KKT_Error.Feasibility = norm(reshape(Feasibility, [], 1), Inf);
-
-KKT_Error.Stationarity = norm(reshape(Stationarity, [], 1), Inf)/stationarityScaling;
+KKT_Error.Stationarity = max([norm(reshape(KKT_Residual.HxTlambdaNext, [], 1), Inf),...
+    norm(reshape(KKT_Residual.HuT, [], 1), Inf),...
+    norm(reshape(KKT_Residual.HpT, [], 1), Inf),...
+    norm(reshape(KKT_Residual.HwT, [], 1), Inf)])/stationarityScaling;
 
 KKT_Error.Total = max([KKT_Error.Feasibility, KKT_Error.Stationarity]);
 end
