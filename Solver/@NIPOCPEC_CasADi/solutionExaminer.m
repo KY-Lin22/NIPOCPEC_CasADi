@@ -21,10 +21,10 @@ Jac = self.JacobianEvaluation(solution, sEnd, 'Regular', []);
 % FB Jacobian for G and PHI
 [PSIgSigma_diagVec, PSIgG_diagVec] = FunObj.FB_G_grad(solution.sigma, Fun.G, zEnd);
 [PSIphiGamma_diagVec, PSIphiPHI_diagVec] = FunObj.FB_PHI_grad(solution.gamma, Fun.PHI, zEnd);
-Jac.PSIgSigma_diagVec   = full(PSIgSigma_diagVec);
-Jac.PSIgG_diagVec       = full(PSIgG_diagVec);
-Jac.PSIphiGamma_diagVec = full(PSIphiGamma_diagVec);
-Jac.PSIphiPHI_diagVec   = full(PSIphiPHI_diagVec);
+Jac.PSIgSigma_diagVec   = PSIgSigma_diagVec;
+Jac.PSIgG_diagVec       = PSIgG_diagVec;
+Jac.PSIphiGamma_diagVec = PSIphiGamma_diagVec;
+Jac.PSIphiPHI_diagVec   = PSIphiPHI_diagVec;
 
 %% Solution Examiner: Cost, KKT Error
 totalCost = sum(Fun.L);

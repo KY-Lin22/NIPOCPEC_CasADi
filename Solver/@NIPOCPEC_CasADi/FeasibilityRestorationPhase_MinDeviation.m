@@ -140,10 +140,10 @@ for j = 1 : maxIterNum + 1
         % FB Jacobian for G and PHI
         [PSIgSigma_diagVec, PSIgG_diagVec] = FunObj.FB_G_grad(Var.sigma, Fun.G, z);
         [PSIphiGamma_diagVec, PSIphiPHI_diagVec] = FunObj.FB_PHI_grad(Var.gamma, Fun.PHI, z);
-        Jac.PSIgSigma_diagVec   = full(PSIgSigma_diagVec);
-        Jac.PSIgG_diagVec       = full(PSIgG_diagVec);
-        Jac.PSIphiGamma_diagVec = full(PSIphiGamma_diagVec);
-        Jac.PSIphiPHI_diagVec   = full(PSIphiPHI_diagVec);
+        Jac.PSIgSigma_diagVec   = PSIgSigma_diagVec;
+        Jac.PSIgG_diagVec       = PSIgG_diagVec;
+        Jac.PSIphiGamma_diagVec = PSIphiGamma_diagVec;
+        Jac.PSIphiPHI_diagVec   = PSIphiPHI_diagVec;
     end    
     [KKT_Residual, ~] = self.computeKKT_Residual_Error(Var, Fun, Jac);
     % Hessian and KKT matrix
