@@ -29,7 +29,8 @@ classdef NIPOCPEC_CasADi < handle
                 %            'FB_G', 'FB_G_grad', 'FB_PHI','FB_PHI_grad',
                 %            'G_Fsb', 'PHI_Fsb', 'HAM_grad'
                 %            'J'
-                %            'FRP_L', 'FRP_L_grad', 'FRP_L_hessian'                
+                %            'FRP_L', 'FRP_L_grad', 'FRP_L_hessian'   
+                %            'A_b_lsqminnorm'
     end
     %% Constructor Method for NIPOCPEC_CasADi     
     methods
