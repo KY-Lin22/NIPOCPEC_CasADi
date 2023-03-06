@@ -16,7 +16,8 @@ classdef NIPOCPEC_CasADi < handle
               %        'G', 'C', 
               %        'f', 'xPrev'(SX symbolic variable, previous state), 'F'(discretization state equation),
               %        'K', 'lbp', 'ubp', 's'(SX symbolic variable, perturbed parameter for BVI), 
-              %        'PHI'(reformulate BVI as inequalities PHI >= 0 using Scholtes regularization method),                 
+              %        'PHI'(reformulate BVI as inequalities PHI >= 0 using Scholtes regularization method),   
+              %        'BL', 'BU'(KKT off-diagnal matrix)
         Option % struct, solver option
         
         FunObj % struct, CasADi function object
@@ -145,6 +146,13 @@ classdef NIPOCPEC_CasADi < handle
             self.OCPEC.Dim.Y = self.OCPEC.Dim.Z + self.OCPEC.Dim.LAMBDA;
             self.OCPEC.Dim.Node = cumsum([self.OCPEC.Dim.sigma, self.OCPEC.Dim.eta, self.OCPEC.Dim.lambda, self.OCPEC.Dim.gamma,...
                 self.OCPEC.Dim.x, self.OCPEC.Dim.u, self.OCPEC.Dim.p, self.OCPEC.Dim.w]);                       
+            
+            % KKT off-diagnal matrix BL and BU
+            BL = [zeros(self.OCPEC.Dim.sigma + self.OCPEC.Dim.eta, self.OCPEC.Dim.Y);...
+                zeros(self.OCPEC.Dim.lambda, self.OCPEC.Dim.LAMBDA), eye(self.OCPEC.Dim.x), zeros(self.OCPEC.Dim.lambda, self.OCPEC.Dim.Z -self.OCPEC.Dim.x);...
+                zeros(self.OCPEC.Dim.gamma + self.OCPEC.Dim.Z, self.OCPEC.Dim.Y)];
+            self.OCPEC.BL = BL;
+            self.OCPEC.BU = BL';
             
             %% initialize properties: Option
             self.Option = self.createOption();            
