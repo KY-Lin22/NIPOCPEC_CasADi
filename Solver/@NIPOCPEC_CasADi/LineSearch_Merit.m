@@ -41,7 +41,8 @@ totalCostDD = FunObj.totalCostDD(Jac.Lx, Jac.Lu, Jac.Lp, Jac.Lw, dx_k, du_k, dp_
 totalCostDD = sum(full(totalCostDD));
 
 % constraint violation (L1 norm)
-totalCstrVio_L1Norm = norm(reshape([Fun.PSIg; Fun.C; Fun.F; Fun.PSIphi], [], 1), 1); 
+totalCstrVio_L1Norm = norm(reshape(Fun.PSIg, [], 1), 1) + norm(reshape(Fun.C, [], 1), 1)...
+    + norm(reshape(Fun.F, [], 1), 1) + norm(reshape(Fun.PSIphi, [], 1), 1); 
 
 % penalty parameter
 beta_Trial = totalCostDD/((1 - rho) * totalCstrVio_L1Norm);
@@ -73,7 +74,8 @@ while ~hasFoundNewIterate
 
     Fun_trial = self.FunctionEvaluation(Var_trial, s, z, mode, FRP);
     totalCost_trail = sum(Fun_trial.L);
-    totalCstrVio_L1Norm_trial = norm(reshape([Fun_trial.PSIg; Fun_trial.C; Fun_trial.F; Fun_trial.PSIphi], [], 1), 1);
+    totalCstrVio_L1Norm_trial = norm(reshape(Fun_trial.PSIg, [], 1), 1) + norm(reshape(Fun_trial.C, [], 1), 1)...
+    + norm(reshape(Fun_trial.F, [], 1), 1) + norm(reshape(Fun_trial.PSIphi, [], 1), 1);
     merit_trial = totalCost_trail + beta_k * totalCstrVio_L1Norm_trial;
 
     %% Step 2: checking sufficient decrease condition
@@ -90,7 +92,8 @@ while ~hasFoundNewIterate
         
         Fun_trial = self.FunctionEvaluation(Var_trial, s, z, 'Regular', []);
         totalCost_trail = sum(Fun_trial.L);
-        totalCstrVio_L1Norm_trial = norm(reshape([Fun_trial.PSIg; Fun_trial.C; Fun_trial.F; Fun_trial.PSIphi], [], 1), 1);
+        totalCstrVio_L1Norm_trial = norm(reshape(Fun_trial.PSIg, [], 1), 1) + norm(reshape(Fun_trial.C, [], 1), 1)...
+            + norm(reshape(Fun_trial.F, [], 1), 1) + norm(reshape(Fun_trial.PSIphi, [], 1), 1);
         merit_trial = totalCost_trail + beta_k * totalCstrVio_L1Norm_trial;
         
         if merit_trial <= merit + stepSize_trial * nu_D * meritDD
