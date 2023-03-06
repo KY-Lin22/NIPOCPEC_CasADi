@@ -1,6 +1,7 @@
 function Hessian = HessianEvaluation(self, Var, Jac, s, mode, FRP)
 %UNTITLED17 Summary of this function goes here
 %   Detailed explanation goes here
+% Hessian (regular recorded as sparse, FRP recorded as DM)
 
 OCPEC = self.OCPEC;
 FunObj = self.FunObj;
@@ -17,22 +18,22 @@ switch mode
             case 'Exact'
                 HAM_hessian = FunObj.HAM_hessian(Var.x, Var.u, Var.p, Var.w,...
                     Var.sigma, Var.eta, Var.lambda, Var.gamma, s);  
-                Hessian = full(HAM_hessian);
+                Hessian = sparse(HAM_hessian);
             case 'CostFunction'
                 L_S_hessian = FunObj.L_S_hessian(Var.x, Var.u, Var.p, Var.w);
-                Hessian = full(L_S_hessian);
+                Hessian = sparse(L_S_hessian);
             case 'GaussNewton'
                 error('specified method to compute Hessian is not supported')
             otherwise
                 error('specified method to compute Hessian is not supported')
         end
         % merge
-        Hessian(:, (nStages - 1) * Dim.Z + 1 : end) = Hessian(:, (nStages - 1) * Dim.Z + 1 : end) + full(L_T_hessian);
+        Hessian(:, (nStages - 1) * Dim.Z + 1 : end) = Hessian(:, (nStages - 1) * Dim.Z + 1 : end) + sparse(L_T_hessian);
         
     case 'FRP'
         %% FRP iteration routine
         FRP_L_hessian = FunObj.FRP_L_hessian(Var.x, Var.u, Var.p, Var.w, FRP.ZRef, FRP.ZWeight);
-        Hessian = full(FRP_L_hessian);
+        Hessian = FRP_L_hessian;
 end
 
 end
