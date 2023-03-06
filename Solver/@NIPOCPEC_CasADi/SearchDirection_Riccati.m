@@ -52,7 +52,7 @@ for n = N - 1 : -1 : 1
             Frak_b_n = T_n - BU * (Frak_A_nNext\Frak_b_nNext);
         case 'mldivide_sparse'
             % solve linear system using mldivide(sparse)
-            Frak_A_n = sparse(J_n) - sparse(BU) * (sparse(Frak_A_nNext)\BL);
+            Frak_A_n = sparse(J_n) - sparse(BU) * (sparse(Frak_A_nNext)\sparse(BL));
             Frak_b_n = T_n - sparse(BU) * (sparse(Frak_A_nNext)\Frak_b_nNext);            
         otherwise
             error('specified method is not supported')
