@@ -23,16 +23,18 @@ BL = KKT_Matrix.BL;
 BU = KKT_Matrix.BU;
 
 %% backward recursion for Frak_A and Frak_b (using fold/mapaccum latter?)
-Frak_A = zeros(Dim.Y, Dim.Y * N);
+Frak_A = cell(1, N);
 Frak_b = zeros(Dim.Y, N);
 % initialization: Frak_A_N and Frak_b_N
-Frak_A(:, Dim.Y * (N - 1) + 1 : Dim.Y * N) = J(:, Dim.Y * (N - 1) + 1 : Dim.Y * N);
-Frak_b(:, N) = T(:, N);
+J_N = J(:, Dim.Y * (N - 1) + 1 : Dim.Y * N);
+T_N = T(:, N);
+Frak_A{N} = J_N;
+Frak_b(:, N) = T_N;
 for n = N - 1 : -1 : 1
     % load 
     J_n = J(:, Dim.Y * (n - 1) + 1 : Dim.Y * n);
     T_n = T(:, n);
-    Frak_A_nNext = Frak_A(:, Dim.Y * n + 1 : Dim.Y * (n + 1));
+    Frak_A_nNext = Frak_A{n + 1};
     Frak_b_nNext = Frak_b(:, n + 1);
     % compute Frak_A_n and Frak_b_n
     switch Option.linearSystemSolver
@@ -57,7 +59,7 @@ for n = N - 1 : -1 : 1
             Frak_b_n = T_n - BU * pinv(Frak_A_nNext) * Frak_b_nNext;
     end
     % record
-    Frak_A(:, Dim.Y * (n - 1) + 1 : Dim.Y * n) = Frak_A_n;
+    Frak_A{n} = Frak_A_n;
     Frak_b(:, n) = Frak_b_n;
 end
 
@@ -66,7 +68,7 @@ dY = zeros(Dim.Y, N);
 dY_nPrev = zeros(Dim.Y, 1);
 for n = 1 : N
     %
-    Frak_A_n = Frak_A(:, Dim.Y * (n - 1) + 1 : Dim.Y * n);
+    Frak_A_n = Frak_A{n};
     Frak_b_n = Frak_b(:, n);
     % compute search direction dY_n
     switch Option.linearSystemSolver
